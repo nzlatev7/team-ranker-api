@@ -50,16 +50,11 @@ namespace TeamRanker.Api
             app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             if (env.IsDevelopment())
-            {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-            else
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "TeamRanker API v1"));
 
             app.UseHttpsRedirection();
 

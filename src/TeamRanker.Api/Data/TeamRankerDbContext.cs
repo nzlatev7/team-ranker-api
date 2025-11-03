@@ -31,11 +31,6 @@ namespace TeamRanker.Api.Data
                     .HasForeignKey(m => m.AwayTeamId)
                     .OnDelete(DeleteBehavior.Restrict);
             });
-
-            modelBuilder.Entity<Match>(entity =>
-            {
-                entity.HasIndex(m => new { m.HomeTeamId, m.AwayTeamId, m.PlayedOn });
-            });
         }
     }
 }

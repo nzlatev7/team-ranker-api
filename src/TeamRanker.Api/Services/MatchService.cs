@@ -1,8 +1,8 @@
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using TeamRanker.Api.Data;
 using TeamRanker.Core.Entities;
 using TeamRanker.Core.Interfaces;
@@ -40,6 +40,7 @@ namespace TeamRanker.Api.Services
 
         public async Task<Match> CreateAsync(Match match)
         {
+            EnsureNotFutureDate(match.PlayedOn);
             await ValidateTeamsExist(match);
 
             _context.Matches.Add(match);
@@ -57,6 +58,7 @@ namespace TeamRanker.Api.Services
                 return null;
             }
 
+            EnsureNotFutureDate(match.PlayedOn);
             await ValidateTeamsExist(match);
 
             existing.HomeTeamId = match.HomeTeamId;
@@ -82,6 +84,19 @@ namespace TeamRanker.Api.Services
             _context.Matches.Remove(existing);
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        private static void EnsureNotFutureDate(DateTime playedOn)
+        {
+            // If playedOn has Kind = Local or Utc, reset it to Unspecified
+            var playedOnUnspecified = DateTime.SpecifyKind(playedOn, DateTimeKind.Unspecified);
+
+            // Now convert from Bulgarian timezone to UTC
+            var bulgarianTimeZone = TimeZoneInfo.FindSystemTimeZoneById("FLE Standard Time");
+            var playedOnUtc = TimeZoneInfo.ConvertTimeToUtc(playedOnUnspecified, bulgarianTimeZone);
+
+            if (playedOnUtc > DateTime.UtcNow.AddSeconds(1))
+                throw new InvalidOperationException("PlayedOn cannot be in the future.");
         }
 
         private async Task ValidateTeamsExist(Match match)

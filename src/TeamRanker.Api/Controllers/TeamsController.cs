@@ -1,7 +1,7 @@
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using TeamRanker.Api.Models;
 using TeamRanker.Core.Entities;
 using TeamRanker.Core.Interfaces;
@@ -28,6 +28,7 @@ namespace TeamRanker.Api.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [ActionName("GetByIdAsync")]
         public async Task<ActionResult<TeamDto>> GetByIdAsync(int id)
         {
             var team = await _teamService.GetByIdAsync(id);

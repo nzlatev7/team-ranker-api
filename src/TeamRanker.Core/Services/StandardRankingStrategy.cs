@@ -7,12 +7,6 @@ using TeamRanker.Core.Models;
 namespace TeamRanker.Core.Services
 {
 
-    /// <summary>
-    /// Implements the standard 3-1-0 point system used in many leagues.
-    /// This demonstrates the Strategy pattern – the algorithm used to
-    /// calculate the standings is encapsulated and can be swapped with a
-    /// different implementation without changing the rest of the system.
-    /// </summary>
     public class StandardRankingStrategy : IRankingStrategy
     {
         private const int WinPoints = 3;
