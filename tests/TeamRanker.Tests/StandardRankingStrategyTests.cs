@@ -34,16 +34,16 @@ namespace TeamRanker.Tests
             Assert.Collection(standings,
                 first =>
                 {
-                    Assert.Equal(1, first.TeamId);
-                    Assert.Equal(3, first.Points);
+                    Assert.Equal(3, first.TeamId);
+                    Assert.Equal(4, first.Points);
                     Assert.Equal(2, first.Played);
                     Assert.Equal(1, first.Wins);
-                    Assert.Equal(0, first.Draws);
-                    Assert.Equal(1, first.Losses);
+                    Assert.Equal(1, first.Draws);
+                    Assert.Equal(0, first.Losses);
                 },
                 second =>
                 {
-                    Assert.Equal(3, second.TeamId);
+                    Assert.Equal(1, second.TeamId);
                     Assert.Equal(3, second.Points);
                 },
                 third =>
