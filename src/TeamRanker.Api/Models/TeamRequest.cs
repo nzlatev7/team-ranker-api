@@ -1,13 +1,15 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace TeamRanker.Api.Models;
-
-public class TeamRequest
+namespace TeamRanker.Api.Models
 {
-    [Required]
-    [MaxLength(200)]
-    public string Name { get; set; } = string.Empty;
 
-    [MaxLength(200)]
-    public string? City { get; set; }
+    public class TeamRequest
+    {
+        [Required]
+        [MaxLength(200)]
+        public string Name { get; set; } = string.Empty;
+
+        [MaxLength(200)]
+        public string? City { get; set; }
+    }
 }

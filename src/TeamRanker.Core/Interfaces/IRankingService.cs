@@ -2,9 +2,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TeamRanker.Core.Models;
 
-namespace TeamRanker.Core.Interfaces;
-
-public interface IRankingService
+namespace TeamRanker.Core.Interfaces
 {
-    Task<IReadOnlyCollection<TeamStanding>> GetStandingsAsync();
+
+    public interface IRankingService
+    {
+        Task<IReadOnlyCollection<TeamStanding>> GetStandingsAsync();
+    }
 }

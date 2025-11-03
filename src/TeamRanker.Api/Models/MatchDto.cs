@@ -1,27 +1,29 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace TeamRanker.Api.Models;
-
-public class MatchDto
+namespace TeamRanker.Api.Models
 {
-    public int Id { get; set; }
 
-    [Required]
-    public int HomeTeamId { get; set; }
+    public class MatchDto
+    {
+        public int Id { get; set; }
 
-    public string? HomeTeamName { get; set; }
+        [Required]
+        public int HomeTeamId { get; set; }
 
-    [Required]
-    public int AwayTeamId { get; set; }
+        public string? HomeTeamName { get; set; }
 
-    public string? AwayTeamName { get; set; }
+        [Required]
+        public int AwayTeamId { get; set; }
 
-    [Range(0, int.MaxValue)]
-    public int HomeScore { get; set; }
+        public string? AwayTeamName { get; set; }
 
-    [Range(0, int.MaxValue)]
-    public int AwayScore { get; set; }
+        [Range(0, int.MaxValue)]
+        public int HomeScore { get; set; }
 
-    public DateTime PlayedOn { get; set; }
+        [Range(0, int.MaxValue)]
+        public int AwayScore { get; set; }
+
+        public DateTime PlayedOn { get; set; }
+    }
 }
