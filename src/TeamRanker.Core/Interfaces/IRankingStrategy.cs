@@ -2,9 +2,11 @@ using System.Collections.Generic;
 using TeamRanker.Core.Entities;
 using TeamRanker.Core.Models;
 
-namespace TeamRanker.Core.Interfaces;
-
-public interface IRankingStrategy
+namespace TeamRanker.Core.Interfaces
 {
-    IReadOnlyCollection<TeamStanding> CalculateStandings(IEnumerable<Team> teams, IEnumerable<Match> matches);
+
+    public interface IRankingStrategy
+    {
+        IReadOnlyCollection<TeamStanding> CalculateStandings(IEnumerable<Team> teams, IEnumerable<Match> matches);
+    }
 }

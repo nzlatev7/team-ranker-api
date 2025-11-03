@@ -6,70 +6,72 @@ using TeamRanker.Api.Models;
 using TeamRanker.Core.Entities;
 using TeamRanker.Core.Interfaces;
 
-namespace TeamRanker.Api.Controllers;
-
-[ApiController]
-[Route("api/[controller]")]
-public class TeamsController : ControllerBase
+namespace TeamRanker.Api.Controllers
 {
-    private readonly ITeamService _teamService;
 
-    public TeamsController(ITeamService teamService)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class TeamsController : ControllerBase
     {
-        _teamService = teamService;
-    }
+        private readonly ITeamService _teamService;
 
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<TeamDto>>> GetAllAsync()
-    {
-        var teams = await _teamService.GetAllAsync();
-        return Ok(teams.Select(t => t.ToDto()));
-    }
-
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<TeamDto>> GetByIdAsync(int id)
-    {
-        var team = await _teamService.GetByIdAsync(id);
-        if (team is null)
+        public TeamsController(ITeamService teamService)
         {
-            return NotFound();
+            _teamService = teamService;
         }
 
-        return Ok(team.ToDto());
-    }
-
-    [HttpPost]
-    public async Task<ActionResult<TeamDto>> CreateAsync([FromBody] TeamRequest request)
-    {
-        var team = new Team();
-        team.UpdateEntity(request);
-        var created = await _teamService.CreateAsync(team);
-        return CreatedAtAction(nameof(GetByIdAsync), new { id = created.Id }, created.ToDto());
-    }
-
-    [HttpPut("{id:int}")]
-    public async Task<ActionResult<TeamDto>> UpdateAsync(int id, [FromBody] TeamRequest request)
-    {
-        var team = new Team();
-        team.UpdateEntity(request);
-        var updated = await _teamService.UpdateAsync(id, team);
-        if (updated is null)
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<TeamDto>>> GetAllAsync()
         {
-            return NotFound();
+            var teams = await _teamService.GetAllAsync();
+            return Ok(teams.Select(t => t.ToDto()));
         }
 
-        return Ok(updated.ToDto());
-    }
-
-    [HttpDelete("{id:int}")]
-    public async Task<IActionResult> DeleteAsync(int id)
-    {
-        var removed = await _teamService.DeleteAsync(id);
-        if (!removed)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<TeamDto>> GetByIdAsync(int id)
         {
-            return NotFound();
+            var team = await _teamService.GetByIdAsync(id);
+            if (team is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(team.ToDto());
         }
 
-        return NoContent();
+        [HttpPost]
+        public async Task<ActionResult<TeamDto>> CreateAsync([FromBody] TeamRequest request)
+        {
+            var team = new Team();
+            team.UpdateEntity(request);
+            var created = await _teamService.CreateAsync(team);
+            return CreatedAtAction(nameof(GetByIdAsync), new { id = created.Id }, created.ToDto());
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult<TeamDto>> UpdateAsync(int id, [FromBody] TeamRequest request)
+        {
+            var team = new Team();
+            team.UpdateEntity(request);
+            var updated = await _teamService.UpdateAsync(id, team);
+            if (updated is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(updated.ToDto());
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            var removed = await _teamService.DeleteAsync(id);
+            if (!removed)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
     }
 }

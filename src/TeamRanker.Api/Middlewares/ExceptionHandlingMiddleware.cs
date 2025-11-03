@@ -5,38 +5,40 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace TeamRanker.Api.Middlewares;
-
-public class ExceptionHandlingMiddleware
+namespace TeamRanker.Api.Middlewares
 {
-    private readonly RequestDelegate _next;
-    private readonly ILogger<ExceptionHandlingMiddleware> _logger;
 
-    public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
+    public class ExceptionHandlingMiddleware
     {
-        _next = next;
-        _logger = logger;
-    }
+        private readonly RequestDelegate _next;
+        private readonly ILogger<ExceptionHandlingMiddleware> _logger;
 
-    public async Task InvokeAsync(HttpContext context)
-    {
-        try
+        public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
         {
-            await _next(context);
+            _next = next;
+            _logger = logger;
         }
-        catch (Exception ex)
+
+        public async Task InvokeAsync(HttpContext context)
         {
-            _logger.LogError(ex, "An unhandled exception occurred");
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            context.Response.ContentType = "application/json";
-
-            var payload = new
+            try
             {
-                Message = "An unexpected error occurred. Please try again later.",
-                TraceId = context.TraceIdentifier
-            };
+                await _next(context);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unhandled exception occurred");
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                context.Response.ContentType = "application/json";
 
-            await context.Response.WriteAsync(JsonSerializer.Serialize(payload));
+                var payload = new
+                {
+                    Message = "An unexpected error occurred. Please try again later.",
+                    TraceId = context.TraceIdentifier
+                };
+
+                await context.Response.WriteAsync(JsonSerializer.Serialize(payload));
+            }
         }
     }
 }

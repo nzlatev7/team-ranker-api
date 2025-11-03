@@ -5,23 +5,25 @@ using Microsoft.AspNetCore.Mvc;
 using TeamRanker.Api.Models;
 using TeamRanker.Core.Interfaces;
 
-namespace TeamRanker.Api.Controllers;
-
-[ApiController]
-[Route("api/[controller]")]
-public class RankingsController : ControllerBase
+namespace TeamRanker.Api.Controllers
 {
-    private readonly IRankingService _rankingService;
 
-    public RankingsController(IRankingService rankingService)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class RankingsController : ControllerBase
     {
-        _rankingService = rankingService;
-    }
+        private readonly IRankingService _rankingService;
 
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<RankingDto>>> GetAsync()
-    {
-        var standings = await _rankingService.GetStandingsAsync();
-        return Ok(standings.Select(s => s.ToDto()));
+        public RankingsController(IRankingService rankingService)
+        {
+            _rankingService = rankingService;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<RankingDto>>> GetAsync()
+        {
+            var standings = await _rankingService.GetStandingsAsync();
+            return Ok(standings.Select(s => s.ToDto()));
+        }
     }
 }
