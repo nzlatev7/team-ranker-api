@@ -37,3 +37,8 @@ dotnet test TeamRanker.sln
 - Strategy pattern encapsulating the ranking algorithm for easy substitution.
 - Global exception handling middleware producing consistent error responses.
 - Swagger/OpenAPI documentation enabled by default.
+
+## Design patterns
+
+- **Strategy pattern** – The `IRankingStrategy` abstraction and `StandardRankingStrategy` implementation encapsulate the ranking
+  algorithm so that alternative strategies can be swapped without changing callers such as `RankingService`. 【F:src/TeamRanker.Core/Interfaces/IRankingStrategy.cs†L7-L11】【F:src/TeamRanker.Core/Services/StandardRankingStrategy.cs†L10-L66】【F:src/TeamRanker.Api/Services/RankingService.cs†L11-L27】
